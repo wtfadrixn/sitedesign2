@@ -1,0 +1,218 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Portfólio — Studio Adrian</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+
+<style>
+:root {
+  --navy: #1a2540;
+  --navy-mid: #243256;
+  --slate: #3d5a73;
+  --steel: #5c7a8a;
+  --mist: #a8bfc9;
+  --cream: #f0ede8;
+  --white: #ffffff;
+  --accent: #4e7d99;
+  --gold: #c9a96e;
+}
+
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+html { scroll-behavior: smooth; }
+body { font-family: 'DM Sans', sans-serif; background: var(--navy); color: var(--white); overflow-x: hidden; }
+
+/* HEADER */
+header {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 22px 48px;
+  border-bottom: 1px solid rgba(255,255,255,.07);
+  backdrop-filter: blur(20px);
+  background: rgba(26,37,64,.8);
+  position: sticky; top: 0; z-index: 100;
+}
+.logo { font-family: 'Playfair Display', serif; font-size: 20px; color: var(--cream); }
+.logo span { font-style: italic; color: var(--mist); }
+nav a {
+  font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
+  color: var(--mist); text-decoration: none; padding: 8px 20px;
+  border: 1px solid rgba(255,255,255,.15); border-radius: 30px;
+  transition: background .3s, color .3s;
+}
+nav a:hover { background: var(--accent); color: var(--white); border-color: var(--accent); }
+
+/* PAGE HERO */
+.page-hero {
+  padding: 80px 48px 60px;
+  display: flex; flex-direction: column; align-items: center;
+  text-align: center;
+  position: relative; overflow: hidden;
+}
+.page-hero::before {
+  content: '';
+  position: absolute; inset: 0;
+  background: radial-gradient(ellipse 70% 50% at 50% 0%, rgba(77,125,153,.15) 0%, transparent 70%);
+  pointer-events: none;
+}
+.page-label {
+  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
+  color: var(--gold); margin-bottom: 14px;
+}
+.page-title {
+  font-family: 'Playfair Display', serif;
+  font-size: clamp(32px, 5vw, 60px);
+  color: var(--cream); line-height: 1.1;
+}
+.page-title em { font-style: italic; color: var(--mist); }
+.page-sub { font-size: 15px; color: var(--steel); margin-top: 14px; font-weight: 300; }
+
+/* FILTER BAR */
+.filter-bar {
+  display: flex; justify-content: center; gap: 10px; flex-wrap: wrap;
+  padding: 20px 48px 0;
+}
+.filter-btn {
+  font-size: 12px; letter-spacing: .1em; text-transform: uppercase;
+  padding: 7px 20px; border-radius: 30px;
+  background: transparent; color: var(--steel);
+  border: 1px solid rgba(255,255,255,.12);
+  cursor: pointer; transition: all .25s;
+  font-family: 'DM Sans', sans-serif;
+}
+.filter-btn:hover, .filter-btn.active {
+  background: var(--accent); color: var(--white); border-color: var(--accent);
+}
+
+/* MASONRY GRID */
+.portfolio-grid {
+  columns: 3; column-gap: 4px;
+  padding: 40px 4px;
+  max-width: 1400px; margin: 0 auto;
+}
+@media(max-width:900px) { .portfolio-grid { columns: 2; } }
+@media(max-width:500px) { .portfolio-grid { columns: 1; } }
+
+.port-item {
+  break-inside: avoid;
+  margin-bottom: 4px;
+  position: relative; overflow: hidden;
+  cursor: pointer;
+  display: block;
+  opacity: 0; transform: translateY(20px);
+  transition: opacity .5s ease, transform .5s ease;
+}
+.port-item.show { opacity: 1; transform: translateY(0); }
+.port-item img { width: 100%; display: block; transition: transform .5s ease; }
+.port-item:hover img { transform: scale(1.04); }
+.port-overlay {
+  position: absolute; inset: 0;
+  background: linear-gradient(to top, rgba(26,37,64,.85) 0%, transparent 50%);
+  opacity: 0; transition: opacity .35s;
+  display: flex; align-items: flex-end; padding: 20px;
+}
+.port-item:hover .port-overlay { opacity: 1; }
+.port-tag {
+  font-size: 11px; letter-spacing: .15em; text-transform: uppercase;
+  color: var(--cream); font-weight: 500;
+}
+
+/* LIGHTBOX */
+#lightbox {
+  position: fixed; inset: 0;
+  background: rgba(10,15,30,.95);
+  backdrop-filter: blur(14px);
+  display: none; align-items: center; justify-content: center;
+  z-index: 9999;
+}
+#lightbox.open { display: flex; }
+#lightbox img {
+  max-width: 88vw; max-height: 88vh;
+  border-radius: 12px;
+  box-shadow: 0 40px 100px rgba(0,0,0,.6);
+  animation: lbIn .3s ease;
+}
+@keyframes lbIn { from { opacity:0; transform:scale(.95); } to { opacity:1; transform:scale(1); } }
+#lb-close {
+  position: absolute; top: 28px; right: 32px;
+  font-size: 28px; color: var(--mist); cursor: pointer;
+  background: none; border: none; transition: color .2s;
+}
+#lb-close:hover { color: var(--white); }
+
+/* FOOTER */
+footer {
+  border-top: 1px solid rgba(255,255,255,.06);
+  padding: 28px 48px;
+  display: flex; justify-content: space-between; align-items: center;
+  flex-wrap: wrap; gap: 12px;
+}
+.footer-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--cream); }
+.footer-copy { font-size: 12px; color: var(--steel); letter-spacing: .08em; }
+</style>
+</head>
+<body>
+
+<!-- LIGHTBOX -->
+<div id="lightbox">
+  <button id="lb-close">&#x2715;</button>
+  <img src="" alt="">
+</div>
+
+<!-- HEADER -->
+<header>
+  <div class="logo">Studio <span>Adrian</span></div>
+  <nav>
+    <a href="index.html">← Voltar ao site</a>
+  </nav>
+</header>
+
+<!-- PAGE HERO -->
+<div class="page-hero">
+  <span class="page-label">Portfólio Completo</span>
+  <h1 class="page-title">Cada projeto,<br><em>uma história</em></h1>
+  <p class="page-sub">Design criativo com estratégia e identidade visual marcante.</p>
+</div>
+
+<!-- GRID -->
+<div class="portfolio-grid">
+  <div class="port-item"><img src="brasil.png" alt=""><div class="port-overlay"><span class="port-tag">Identidade Visual</span></div></div>
+  <div class="port-item"><img src="brand.png" alt=""><div class="port-overlay"><span class="port-tag">Branding</span></div></div>
+  <div class="port-item"><img src="camara.png" alt=""><div class="port-overlay"><span class="port-tag">Design</span></div></div>
+  <div class="port-item"><img src="brutal.png" alt=""><div class="port-overlay"><span class="port-tag">Tipografia</span></div></div>
+  <div class="port-item"><img src="minimalismo.png" alt=""><div class="port-overlay"><span class="port-tag">Minimalismo</span></div></div>
+  <div class="port-item"><img src="btts.png" alt=""><div class="port-overlay"><span class="port-tag">Social Media</span></div></div>
+  <div class="port-item"><img src="belle.png" alt=""><div class="port-overlay"><span class="port-tag">Identidade Visual</span></div></div>
+</div>
+
+<footer>
+  <div class="footer-logo">Studio <em style="font-style:italic;color:var(--mist)">Adrian</em></div>
+  <span class="footer-copy">© 2025 Studio Adrian Design</span>
+</footer>
+
+<script>
+const lightbox = document.getElementById('lightbox');
+const lbImg = lightbox.querySelector('img');
+document.getElementById('lb-close').onclick = () => lightbox.classList.remove('open');
+lightbox.addEventListener('click', e => { if(e.target === lightbox) lightbox.classList.remove('open'); });
+
+document.querySelectorAll('.port-item').forEach(item => {
+  item.onclick = () => {
+    lbImg.src = item.querySelector('img').src;
+    lightbox.classList.add('open');
+  };
+});
+
+const io = new IntersectionObserver(entries => {
+  entries.forEach((e, i) => {
+    if(e.isIntersecting) {
+      setTimeout(() => e.target.classList.add('show'), (Array.from(document.querySelectorAll('.port-item')).indexOf(e.target) % 3) * 100);
+    }
+  });
+}, { threshold: .1 });
+
+document.querySelectorAll('.port-item').forEach(el => io.observe(el));
+</script>
+
+</body>
+</html>
