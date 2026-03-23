@@ -1,0 +1,419 @@
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orçamento — Studio Adrian</title>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
+<style>
+:root{--navy:#1a2540;--navy-mid:#243256;--slate:#3d5a73;--steel:#5c7a8a;--mist:#a8bfc9;--cream:#f0ede8;--white:#ffffff;--accent:#4e7d99;--gold:#c9a96e;--success:#4caf82}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden;min-height:100vh}
+.bg-layer{position:fixed;inset:0;z-index:0;pointer-events:none;background:radial-gradient(ellipse 60% 50% at 15% 20%,rgba(78,125,153,.12) 0%,transparent 60%),radial-gradient(ellipse 50% 40% at 85% 80%,rgba(201,169,110,.07) 0%,transparent 55%)}
+.bg-grid{position:fixed;inset:0;z-index:0;pointer-events:none;background-image:linear-gradient(rgba(255,255,255,.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.025) 1px,transparent 1px);background-size:60px 60px}
+header{position:sticky;top:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;backdrop-filter:blur(20px);background:rgba(26,37,64,.85);border-bottom:1px solid rgba(255,255,255,.07)}
+.logo{font-family:'Playfair Display',serif;font-size:20px;color:var(--cream);letter-spacing:.08em}
+.logo span{font-style:italic;color:var(--mist)}
+.back-btn{font-size:12px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);text-decoration:none;padding:8px 20px;border:1px solid rgba(255,255,255,.15);border-radius:30px;transition:background .3s,color .3s}
+.back-btn:hover{background:var(--accent);color:var(--white);border-color:var(--accent)}
+.page-hero{position:relative;z-index:1;text-align:center;padding:60px 24px 40px}
+.page-label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:14px;display:block}
+.page-title{font-family:'Playfair Display',serif;font-size:clamp(28px,5vw,52px);color:var(--cream);line-height:1.1}
+.page-title em{font-style:italic;color:var(--mist)}
+.page-sub{font-size:15px;color:var(--steel);margin-top:12px;font-weight:300}
+.steps-bar{display:flex;justify-content:center;align-items:center;gap:0;padding:0 24px 36px;position:relative;z-index:1}
+.step-dot{display:flex;flex-direction:column;align-items:center;gap:6px}
+.step-dot .dot{width:36px;height:36px;border-radius:50%;border:2px solid rgba(255,255,255,.15);background:var(--navy-mid);display:flex;align-items:center;justify-content:center;font-size:13px;font-weight:500;color:var(--steel);transition:all .4s}
+.step-dot.active .dot{border-color:var(--accent);background:var(--accent);color:var(--white)}
+.step-dot.done .dot{border-color:var(--success);background:var(--success);color:var(--white)}
+.step-dot .dot-label{font-size:10px;letter-spacing:.1em;text-transform:uppercase;color:var(--steel);white-space:nowrap}
+.step-dot.active .dot-label{color:var(--mist)}
+.step-connector{width:70px;height:1px;background:rgba(255,255,255,.1);margin-bottom:22px;position:relative}
+.step-connector::after{content:'';position:absolute;top:0;left:0;height:100%;width:0%;background:var(--accent);transition:width .5s ease}
+.step-connector.filled::after{width:100%}
+@media(max-width:500px){.step-connector{width:36px}.step-dot .dot-label{font-size:9px}}
+.form-wrap{max-width:820px;margin:0 auto;padding:0 24px 80px;position:relative;z-index:1}
+.step-panel{display:none;animation:panelIn .4s ease}
+.step-panel.active{display:block}
+@keyframes panelIn{from{opacity:0;transform:translateY(16px)}to{opacity:1;transform:translateY(0)}}
+.step-heading{font-family:'Playfair Display',serif;font-size:22px;color:var(--cream);margin-bottom:6px}
+.step-desc{font-size:14px;color:var(--steel);margin-bottom:24px;font-weight:300}
+.type-label{font-size:10px;letter-spacing:.28em;text-transform:uppercase;color:var(--gold);margin-bottom:10px;margin-top:8px;display:block}
+.service-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;margin-bottom:20px}
+@media(max-width:680px){.service-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:420px){.service-grid{grid-template-columns:1fr}}
+.service-card{background:var(--navy-mid);border:1.5px solid rgba(255,255,255,.08);border-radius:14px;padding:18px 16px;cursor:pointer;transition:border-color .25s,background .25s,transform .2s;position:relative;user-select:none}
+.service-card:hover{border-color:rgba(78,125,153,.4);transform:translateY(-2px)}
+.service-card.selected{border-color:var(--accent);background:rgba(78,125,153,.12)}
+.service-card.selected::after{content:'✓';position:absolute;top:12px;right:14px;width:20px;height:20px;background:var(--accent);border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:11px;color:white}
+.svc-icon{width:38px;height:38px;background:rgba(78,125,153,.15);border:1px solid rgba(78,125,153,.25);border-radius:10px;display:flex;align-items:center;justify-content:center;font-size:18px;margin-bottom:12px}
+.svc-name{font-family:'Playfair Display',serif;font-size:15px;color:var(--cream);margin-bottom:5px}
+.svc-desc{font-size:11px;color:var(--steel);line-height:1.5}
+.svc-price{margin-top:10px;font-size:13px;font-weight:600;color:var(--gold)}
+.addon-list{display:flex;flex-direction:column;gap:10px;margin-bottom:28px}
+.addon-item{background:var(--navy-mid);border:1.5px solid rgba(255,255,255,.07);border-radius:12px;padding:15px 18px;display:flex;align-items:center;gap:14px;cursor:pointer;transition:border-color .25s,background .25s;user-select:none}
+.addon-item:hover{border-color:rgba(78,125,153,.3)}
+.addon-item.selected{border-color:var(--accent);background:rgba(78,125,153,.1)}
+.addon-check{width:22px;height:22px;border-radius:6px;border:1.5px solid rgba(255,255,255,.2);flex-shrink:0;display:flex;align-items:center;justify-content:center;font-size:12px;color:transparent;transition:all .2s}
+.addon-item.selected .addon-check{background:var(--accent);border-color:var(--accent);color:white}
+.addon-info{flex:1}
+.addon-name{font-size:14px;color:var(--cream);font-weight:500;margin-bottom:3px}
+.addon-sub{font-size:12px;color:var(--steel)}
+.addon-price{font-size:13px;color:var(--gold);font-weight:600;flex-shrink:0}
+.field-group{display:flex;flex-direction:column;gap:14px;margin-bottom:28px}
+.field{display:flex;flex-direction:column;gap:6px}
+.field label{font-size:11px;letter-spacing:.1em;text-transform:uppercase;color:var(--mist);font-weight:500}
+.field input,.field textarea,.field select{background:var(--navy-mid);border:1.5px solid rgba(255,255,255,.1);border-radius:12px;padding:13px 16px;color:var(--white);font-family:'DM Sans',sans-serif;font-size:14px;transition:border-color .25s;outline:none;width:100%}
+.field input:focus,.field textarea:focus,.field select:focus{border-color:var(--accent)}
+.field input::placeholder,.field textarea::placeholder{color:rgba(92,122,138,.6)}
+.field textarea{resize:vertical;min-height:96px}
+.field select option{background:var(--navy-mid)}
+.field-row{display:grid;grid-template-columns:1fr 1fr;gap:14px}
+@media(max-width:540px){.field-row{grid-template-columns:1fr}}
+.field-error{font-size:11px;color:#e07070;margin-top:3px;display:none}
+.field.has-error input{border-color:#e07070}
+.field.has-error .field-error{display:block}
+.summary-box{background:var(--navy-mid);border:1px solid rgba(255,255,255,.08);border-radius:16px;padding:24px 22px;margin-bottom:20px}
+.summary-title{font-family:'Playfair Display',serif;font-size:17px;color:var(--cream);margin-bottom:18px;padding-bottom:14px;border-bottom:1px solid rgba(255,255,255,.07)}
+.summary-line{display:flex;justify-content:space-between;align-items:flex-start;padding:7px 0;font-size:13px}
+.summary-line+.summary-line{border-top:1px solid rgba(255,255,255,.04)}
+.summary-key{color:var(--steel)}
+.summary-val{color:var(--cream);font-weight:500;text-align:right;max-width:60%}
+.summary-total{display:flex;justify-content:space-between;align-items:center;margin-top:14px;padding-top:14px;border-top:1px solid rgba(255,255,255,.1)}
+.summary-total span:first-child{font-size:13px;color:var(--mist);letter-spacing:.05em}
+.summary-total span:last-child{font-family:'Playfair Display',serif;font-size:28px;color:var(--gold)}
+.btn-row{display:flex;gap:12px;justify-content:flex-end;margin-top:8px}
+.btn-back{padding:13px 28px;border-radius:40px;background:transparent;color:var(--mist);border:1px solid rgba(255,255,255,.15);font-size:14px;cursor:pointer;font-family:'DM Sans',sans-serif;transition:border-color .2s,color .2s}
+.btn-back:hover{border-color:var(--mist);color:var(--white)}
+.btn-next{padding:13px 36px;border-radius:40px;background:var(--accent);color:var(--white);border:none;font-size:14px;font-weight:500;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 8px 28px rgba(78,125,153,.35);transition:transform .2s,box-shadow .2s,background .2s;letter-spacing:.04em}
+.btn-next:hover{transform:translateY(-2px);box-shadow:0 12px 36px rgba(78,125,153,.45);background:var(--slate)}
+.btn-next:disabled{opacity:.4;cursor:not-allowed;transform:none}
+.btn-wpp{padding:14px 36px;border-radius:40px;background:#25D366;color:white;border:none;font-size:14px;font-weight:700;cursor:pointer;font-family:'DM Sans',sans-serif;box-shadow:0 8px 28px rgba(37,211,102,.3);transition:transform .2s,box-shadow .2s;display:inline-flex;align-items:center;gap:9px}
+.btn-wpp:hover{transform:translateY(-2px);box-shadow:0 14px 36px rgba(37,211,102,.45)}
+#success-screen{display:none;text-align:center;padding:60px 24px 80px;position:relative;z-index:1;animation:panelIn .5s ease}
+.success-icon{width:80px;height:80px;border-radius:50%;background:rgba(76,175,130,.15);border:2px solid var(--success);display:flex;align-items:center;justify-content:center;font-size:32px;margin:0 auto 24px;animation:popIn .5s .2s cubic-bezier(.22,1,.36,1) both}
+@keyframes popIn{from{opacity:0;transform:scale(.6)}to{opacity:1;transform:scale(1)}}
+.success-title{font-family:'Playfair Display',serif;font-size:32px;color:var(--cream);margin-bottom:12px}
+.success-sub{font-size:15px;color:var(--steel);max-width:400px;margin:0 auto 36px;font-weight:300;line-height:1.7}
+.wpp-final{display:inline-flex;align-items:center;gap:10px;padding:16px 44px;border-radius:40px;background:#25D366;color:white;font-size:15px;font-weight:700;text-decoration:none;box-shadow:0 8px 30px rgba(37,211,102,.3);transition:transform .2s,box-shadow .2s}
+.wpp-final:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(37,211,102,.4)}
+</style>
+</head>
+<body>
+<div class="bg-layer"></div>
+<div class="bg-grid"></div>
+
+<header>
+  <div class="logo">Studio <span>Adrian</span></div>
+  <a href="index.html" class="back-btn">← Voltar ao site</a>
+</header>
+
+<div class="page-hero">
+  <span class="page-label">Orçamento</span>
+  <h1 class="page-title">Monte seu <em>projeto</em></h1>
+  <p class="page-sub">Escolha o serviço, preencha seus dados e vá direto ao WhatsApp.</p>
+</div>
+
+<div class="steps-bar">
+  <div class="step-dot active" id="sdot-1"><div class="dot">1</div><span class="dot-label">Serviço</span></div>
+  <div class="step-connector" id="scon-1"></div>
+  <div class="step-dot" id="sdot-2"><div class="dot">2</div><span class="dot-label">Extras</span></div>
+  <div class="step-connector" id="scon-2"></div>
+  <div class="step-dot" id="sdot-3"><div class="dot">3</div><span class="dot-label">Seus dados</span></div>
+  <div class="step-connector" id="scon-3"></div>
+  <div class="step-dot" id="sdot-4"><div class="dot">4</div><span class="dot-label">Resumo</span></div>
+</div>
+
+<div class="form-wrap">
+
+  <!-- STEP 1 -->
+  <div class="step-panel active" id="step-1">
+    <h2 class="step-heading">Qual serviço você precisa?</h2>
+    <p class="step-desc">Selecione uma opção para continuar.</p>
+
+    <span class="type-label">Serviços avulsos</span>
+    <div class="service-grid">
+      <div class="service-card" data-service="Post para Instagram" data-price="30">
+        <div class="svc-icon">📸</div><div class="svc-name">Post Instagram</div>
+        <div class="svc-desc">Arte para feed com identidade da sua marca.</div>
+        <div class="svc-price">R$ 30,00</div>
+      </div>
+      <div class="service-card" data-service="Convite digital" data-price="15">
+        <div class="svc-icon">✉️</div><div class="svc-name">Convite</div>
+        <div class="svc-desc">Design de convite digital personalizado.</div>
+        <div class="svc-price">R$ 15,00</div>
+      </div>
+      <div class="service-card" data-service="Currículo" data-price="10">
+        <div class="svc-icon">📄</div><div class="svc-name">Currículo</div>
+        <div class="svc-desc">Currículo profissional com design diferenciado.</div>
+        <div class="svc-price">R$ 10,00</div>
+      </div>
+      <div class="service-card" data-service="Logomarca" data-price="70">
+        <div class="svc-icon">◈</div><div class="svc-name">Logomarca</div>
+        <div class="svc-desc">Criação de logo profissional para sua marca.</div>
+        <div class="svc-price">R$ 70,00</div>
+      </div>
+      <div class="service-card" data-service="Cartão de visita" data-price="25">
+        <div class="svc-icon">🪪</div><div class="svc-name">Cartão de visita</div>
+        <div class="svc-desc">Design frente e verso pronto para impressão.</div>
+        <div class="svc-price">R$ 25,00</div>
+      </div>
+      <div class="service-card" data-service="Carrosel" data-price="100">
+        <div class="svc-icon">🎠</div><div class="svc-name">Carrosel</div>
+        <div class="svc-desc">Carrosel completo para o Instagram.</div>
+        <div class="svc-price">R$ 100,00</div>
+      </div>
+    </div>
+
+    <span class="type-label">Pacotes completos</span>
+    <div class="service-grid">
+      <div class="service-card" data-service="Pacote Benefício" data-price="150">
+        <div class="svc-icon">✦</div><div class="svc-name">Pacote Benefício</div>
+        <div class="svc-desc">6 artes + um brinde de sua escolha.</div>
+        <div class="svc-price">R$ 150,00</div>
+      </div>
+      <div class="service-card" data-service="Pacote Premium" data-price="200">
+        <div class="svc-icon">◎</div><div class="svc-name">Pacote Premium</div>
+        <div class="svc-desc">6 artes + logo + tipografia + mockups.</div>
+        <div class="svc-price">R$ 200,00</div>
+      </div>
+      <div class="service-card" data-service="Pacote Ultra" data-price="300">
+        <div class="svc-icon">⬡</div><div class="svc-name">Pacote Ultra</div>
+        <div class="svc-desc">10 artes + identidade visual completa + Instagram pronto ou reformulação.</div>
+        <div class="svc-price">R$ 300,00</div>
+      </div>
+    </div>
+
+    <div class="btn-row">
+      <button class="btn-next" id="next-1" onclick="goStep(2)" disabled>Próximo →</button>
+    </div>
+  </div>
+
+  <!-- STEP 2 -->
+  <div class="step-panel" id="step-2">
+    <h2 class="step-heading">Quer adicionar algo mais?</h2>
+    <p class="step-desc">Extras opcionais — pode pular clicando em "Próximo".</p>
+    <div class="addon-list">
+      <div class="addon-item" data-addon="Post extra para Instagram" data-addon-price="30">
+        <div class="addon-check">✓</div>
+        <div class="addon-info"><div class="addon-name">Post extra para Instagram</div><div class="addon-sub">Arte adicional para o feed</div></div>
+        <div class="addon-price">+ R$ 30</div>
+      </div>
+      <div class="addon-item" data-addon="Carrosel extra" data-addon-price="100">
+        <div class="addon-check">✓</div>
+        <div class="addon-info"><div class="addon-name">Carrosel extra</div><div class="addon-sub">Carrosel adicional para campanha ou lançamento</div></div>
+        <div class="addon-price">+ R$ 100</div>
+      </div>
+      <div class="addon-item" data-addon="Cartão de visita" data-addon-price="25">
+        <div class="addon-check">✓</div>
+        <div class="addon-info"><div class="addon-name">Cartão de visita</div><div class="addon-sub">Design frente e verso pronto para impressão</div></div>
+        <div class="addon-price">+ R$ 25</div>
+      </div>
+      <div class="addon-item" data-addon="Convite digital extra" data-addon-price="15">
+        <div class="addon-check">✓</div>
+        <div class="addon-info"><div class="addon-name">Convite digital extra</div><div class="addon-sub">Design de convite personalizado adicional</div></div>
+        <div class="addon-price">+ R$ 15</div>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(1)">← Voltar</button>
+      <button class="btn-next" onclick="goStep(3)">Próximo →</button>
+    </div>
+  </div>
+
+  <!-- STEP 3 -->
+  <div class="step-panel" id="step-3">
+    <h2 class="step-heading">Seus dados de contato</h2>
+    <p class="step-desc">Para eu te identificar quando chegar no WhatsApp.</p>
+    <div class="field-group">
+      <div class="field-row">
+        <div class="field" id="f-nome">
+          <label>Seu nome *</label>
+          <input type="text" id="inp-nome" placeholder="Como posso te chamar?">
+          <span class="field-error">Por favor, preencha seu nome.</span>
+        </div>
+        <div class="field">
+          <label>Nome do negócio</label>
+          <input type="text" id="inp-negocio" placeholder="Nome da sua marca ou empresa">
+        </div>
+      </div>
+      <div class="field-row">
+        <div class="field" id="f-wpp">
+          <label>WhatsApp *</label>
+          <input type="tel" id="inp-wpp" placeholder="(16) 99999-9999">
+          <span class="field-error">Por favor, informe seu WhatsApp.</span>
+        </div>
+        <div class="field">
+          <label>Instagram (opcional)</label>
+          <input type="text" id="inp-insta" placeholder="@seuperfil">
+        </div>
+      </div>
+      <div class="field">
+        <label>Prazo desejado</label>
+        <select id="inp-prazo">
+          <option value="">Sem pressa, vamos conversar</option>
+          <option value="Urgente (até 7 dias)">Urgente (até 7 dias)</option>
+          <option value="2 a 3 semanas">2 a 3 semanas</option>
+          <option value="1 mês">1 mês</option>
+          <option value="Sem prazo definido">Sem prazo definido</option>
+        </select>
+      </div>
+      <div class="field">
+        <label>Conta um pouco sobre o projeto</label>
+        <textarea id="inp-msg" placeholder="Segmento, referências, sensação que quer transmitir... Quanto mais detalhes, melhor!"></textarea>
+      </div>
+    </div>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(2)">← Voltar</button>
+      <button class="btn-next" onclick="validateAndNext()">Ver resumo →</button>
+    </div>
+  </div>
+
+  <!-- STEP 4 -->
+  <div class="step-panel" id="step-4">
+    <h2 class="step-heading">Resumo do pedido</h2>
+    <p class="step-desc">Confira tudo antes de enviar para mim.</p>
+    <div class="summary-box">
+      <div class="summary-title">Detalhes do projeto</div>
+      <div id="summary-content"></div>
+      <div class="summary-total">
+        <span>Total estimado</span>
+        <span id="summary-price">R$ 0</span>
+      </div>
+    </div>
+    <p style="font-size:12px;color:var(--steel);margin-bottom:20px;line-height:1.6;">* Após clicar, você será redirecionado ao meu WhatsApp com a mensagem já preenchida com tudo que selecionou.</p>
+    <div class="btn-row">
+      <button class="btn-back" onclick="goStep(3)">← Voltar</button>
+      <button class="btn-wpp" id="btn-send" onclick="sendForm()">
+        <svg width="17" height="17" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+        Enviar e ir ao WhatsApp
+      </button>
+    </div>
+  </div>
+
+</div>
+
+<!-- SUCCESS -->
+<div id="success-screen">
+  <div class="success-icon">✓</div>
+  <h2 class="success-title">Tudo certo!</h2>
+  <p class="success-sub">A mensagem com seu pedido já está pronta. Clique abaixo para abrir o WhatsApp e enviá-la para mim!</p>
+  <a id="wpp-link" href="#" class="wpp-final" target="_blank">
+    <svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.890-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413Z"/></svg>
+    Abrir WhatsApp
+  </a>
+</div>
+
+<footer style="border-top:1px solid rgba(255,255,255,.06);padding:24px 48px;display:flex;justify-content:space-between;align-items:center;position:relative;z-index:1;flex-wrap:wrap;gap:12px">
+  <div style="font-family:'Playfair Display',serif;font-size:16px;color:var(--cream)">Studio <em style="font-style:italic;color:var(--mist)">Adrian</em></div>
+  <span style="font-size:12px;color:var(--steel)">© 2025 Studio Adrian Design</span>
+</footer>
+
+<script>
+const WHATSAPP = "5516993765374";
+let currentStep=1, selectedService=null, selectedPrice=0, selectedAddons=[];
+
+function goStep(n){
+  document.getElementById(`step-${currentStep}`).classList.remove('active');
+  document.getElementById(`sdot-${currentStep}`).classList.remove('active');
+  document.getElementById(`sdot-${currentStep}`).classList.add('done');
+  if(n<currentStep){
+    document.getElementById(`sdot-${n}`).classList.remove('done');
+    for(let i=n;i<currentStep;i++){const c=document.getElementById(`scon-${i}`);if(c)c.classList.remove('filled')}
+  }
+  currentStep=n;
+  document.getElementById(`step-${currentStep}`).classList.add('active');
+  document.getElementById(`sdot-${currentStep}`).classList.remove('done');
+  document.getElementById(`sdot-${currentStep}`).classList.add('active');
+  const con=document.getElementById(`scon-${currentStep-1}`);
+  if(con)con.classList.add('filled');
+  if(n===4)buildSummary();
+  window.scrollTo({top:0,behavior:'smooth'});
+}
+
+document.querySelectorAll('.service-card').forEach(card=>{
+  card.addEventListener('click',()=>{
+    document.querySelectorAll('.service-card').forEach(c=>c.classList.remove('selected'));
+    card.classList.add('selected');
+    selectedService=card.dataset.service;
+    selectedPrice=parseInt(card.dataset.price);
+    document.getElementById('next-1').disabled=false;
+  });
+});
+
+document.querySelectorAll('.addon-item').forEach(item=>{
+  item.addEventListener('click',()=>{
+    item.classList.toggle('selected');
+    const name=item.dataset.addon, price=parseInt(item.dataset.addonPrice);
+    if(item.classList.contains('selected')) selectedAddons.push({name,price});
+    else selectedAddons=selectedAddons.filter(a=>a.name!==name);
+  });
+});
+
+function validateAndNext(){
+  let ok=true;
+  const nome=document.getElementById('inp-nome'),wpp=document.getElementById('inp-wpp');
+  const fNome=document.getElementById('f-nome'),fWpp=document.getElementById('f-wpp');
+  fNome.classList.remove('has-error'); fWpp.classList.remove('has-error');
+  if(!nome.value.trim()){fNome.classList.add('has-error');ok=false}
+  if(!wpp.value.trim()){fWpp.classList.add('has-error');ok=false}
+  if(ok)goStep(4);
+}
+
+function buildSummary(){
+  const addonsTotal=selectedAddons.reduce((a,b)=>a+b.price,0);
+  const total=selectedPrice+addonsTotal;
+  const nome=document.getElementById('inp-nome').value;
+  const neg=document.getElementById('inp-negocio').value;
+  const wpp=document.getElementById('inp-wpp').value;
+  const insta=document.getElementById('inp-insta').value;
+  const prazo=document.getElementById('inp-prazo').value;
+  let lines=`<div class="summary-line"><span class="summary-key">Serviço</span><span class="summary-val">${selectedService}</span></div>`;
+  if(selectedAddons.length) lines+=`<div class="summary-line"><span class="summary-key">Extras</span><span class="summary-val">${selectedAddons.map(a=>a.name).join(', ')}</span></div>`;
+  if(nome) lines+=`<div class="summary-line"><span class="summary-key">Nome</span><span class="summary-val">${nome}</span></div>`;
+  if(neg)  lines+=`<div class="summary-line"><span class="summary-key">Negócio</span><span class="summary-val">${neg}</span></div>`;
+  if(wpp)  lines+=`<div class="summary-line"><span class="summary-key">WhatsApp</span><span class="summary-val">${wpp}</span></div>`;
+  if(insta)lines+=`<div class="summary-line"><span class="summary-key">Instagram</span><span class="summary-val">${insta}</span></div>`;
+  if(prazo)lines+=`<div class="summary-line"><span class="summary-key">Prazo</span><span class="summary-val">${prazo}</span></div>`;
+  document.getElementById('summary-content').innerHTML=lines;
+  document.getElementById('summary-price').textContent=`R$ ${total.toLocaleString('pt-BR')}`;
+}
+
+function sendForm(){
+  const btn=document.getElementById('btn-send');
+  btn.disabled=true; btn.textContent='Abrindo WhatsApp...';
+  const nome=document.getElementById('inp-nome').value;
+  const neg=document.getElementById('inp-negocio').value;
+  const wpp=document.getElementById('inp-wpp').value;
+  const insta=document.getElementById('inp-insta').value;
+  const prazo=document.getElementById('inp-prazo').value;
+  const msg=document.getElementById('inp-msg').value;
+  const addonsTotal=selectedAddons.reduce((a,b)=>a+b.price,0);
+  const total=selectedPrice+addonsTotal;
+
+  let m=`Olá, Adrian! 👋 Vim pelo formulário do site.\n\n`;
+  m+=`📋 *PEDIDO DE ORÇAMENTO*\n`;
+  m+=`━━━━━━━━━━━━━━━━\n`;
+  m+=`🎨 *Serviço:* ${selectedService}\n`;
+  if(selectedAddons.length) m+=`➕ *Extras:* ${selectedAddons.map(a=>a.name).join(', ')}\n`;
+  m+=`💰 *Total estimado:* R$ ${total.toLocaleString('pt-BR')}\n`;
+  m+=`━━━━━━━━━━━━━━━━\n`;
+  m+=`👤 *Nome:* ${nome}\n`;
+  if(neg)   m+=`🏢 *Negócio:* ${neg}\n`;
+  if(insta) m+=`📱 *Instagram:* ${insta}\n`;
+  m+=`📞 *Meu WhatsApp:* ${wpp}\n`;
+  if(prazo) m+=`⏰ *Prazo desejado:* ${prazo}\n`;
+  if(msg)   m+=`\n💬 *Sobre o projeto:*\n${msg}`;
+
+  const url=`https://wa.me/${WHATSAPP}?text=${encodeURIComponent(m)}`;
+  document.getElementById('wpp-link').href=url;
+  document.querySelector('.form-wrap').style.display='none';
+  document.querySelector('.steps-bar').style.display='none';
+  document.querySelector('.page-hero').style.display='none';
+  document.getElementById('success-screen').style.display='block';
+  setTimeout(()=>window.open(url,'_blank'),800);
+}
+</script>
+</body>
+</html>

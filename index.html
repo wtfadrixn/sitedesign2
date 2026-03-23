@@ -5,457 +5,172 @@
 <meta name="viewport" content="width=device-width, initial-scale=1.0">
 <title>Studio Adrian — Design Criativo</title>
 <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,400;0,700;1,400&family=DM+Sans:wght@300;400;500&display=swap" rel="stylesheet">
-
 <style>
-:root {
-  --navy: #1a2540;
-  --navy-mid: #243256;
-  --slate: #3d5a73;
-  --steel: #5c7a8a;
-  --mist: #a8bfc9;
-  --cream: #f0ede8;
-  --white: #ffffff;
-  --accent: #4e7d99;
-  --gold: #c9a96e;
-}
+:root{--navy:#1a2540;--navy-mid:#243256;--slate:#3d5a73;--steel:#5c7a8a;--mist:#a8bfc9;--cream:#f0ede8;--white:#ffffff;--accent:#4e7d99;--gold:#c9a96e}
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+html{scroll-behavior:smooth}
+body{font-family:'DM Sans',sans-serif;background:var(--navy);color:var(--white);overflow-x:hidden}
 
-*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+/* LOADER */
+#loader{position:fixed;inset:0;background:var(--navy);display:flex;align-items:center;justify-content:center;z-index:9999;transition:opacity .6s ease,visibility .6s}
+#loader.hide{opacity:0;visibility:hidden}
+.loader-text{font-family:'Playfair Display',serif;font-size:clamp(24px,5vw,42px);letter-spacing:.15em;color:var(--cream);overflow:hidden}
+.loader-text span{display:inline-block;animation:letterDrop .8s cubic-bezier(.22,1,.36,1) both}
+.loader-text span:nth-child(2){animation-delay:.05s}.loader-text span:nth-child(3){animation-delay:.10s}.loader-text span:nth-child(4){animation-delay:.15s}.loader-text span:nth-child(5){animation-delay:.20s}.loader-text span:nth-child(6){animation-delay:.25s}.loader-text span:nth-child(7){animation-delay:.30s}.loader-text span:nth-child(8){animation-delay:.35s}.loader-text span:nth-child(9){animation-delay:.40s}.loader-text span:nth-child(10){animation-delay:.45s}.loader-text span:nth-child(11){animation-delay:.50s}.loader-text span:nth-child(12){animation-delay:.55s}.loader-text span:nth-child(13){animation-delay:.60s}
+@keyframes letterDrop{from{opacity:0;transform:translateY(-30px)}to{opacity:1;transform:translateY(0)}}
 
-html { scroll-behavior: smooth; }
+/* HEADER */
+header{position:fixed;top:0;left:0;right:0;z-index:100;display:flex;align-items:center;justify-content:space-between;padding:20px 48px;backdrop-filter:blur(20px);background:rgba(26,37,64,.75);border-bottom:1px solid rgba(255,255,255,.07);transition:padding .3s}
+.logo{font-family:'Playfair Display',serif;font-size:20px;letter-spacing:.08em;color:var(--cream)}
+.logo span{font-style:italic;color:var(--mist)}
+nav{display:flex;gap:28px;align-items:center}
+nav a{font-size:13px;letter-spacing:.12em;text-transform:uppercase;color:var(--mist);text-decoration:none;position:relative;transition:color .3s}
+nav a::after{content:'';position:absolute;left:0;bottom:-4px;width:0;height:1px;background:var(--gold);transition:width .3s}
+nav a:hover{color:var(--white)}
+nav a:hover::after{width:100%}
+.nav-cta{padding:9px 22px;border:1px solid rgba(255,255,255,.25);border-radius:40px;color:var(--white)!important;transition:background .3s,border-color .3s!important;background:rgba(78,125,153,.2)}
+.nav-cta:hover{background:var(--accent);border-color:var(--accent)}
+.nav-cta::after{display:none!important}
+.nav-orc{background:rgba(201,169,110,.15)!important;border-color:rgba(201,169,110,.4)!important;color:var(--gold)!important}
+.nav-orc:hover{background:var(--gold)!important;border-color:var(--gold)!important;color:var(--navy)!important}
 
-body {
-  font-family: 'DM Sans', sans-serif;
-  background: var(--navy);
-  color: var(--white);
-  overflow-x: hidden;
-}
+/* HERO */
+.hero{min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;text-align:center;padding:120px 24px 80px;position:relative;overflow:hidden}
+.hero-bg{position:absolute;inset:0;z-index:0;background:radial-gradient(ellipse 80% 60% at 50% 0%,rgba(77,125,153,.18) 0%,transparent 70%),radial-gradient(ellipse 50% 40% at 80% 80%,rgba(61,90,115,.12) 0%,transparent 60%)}
+.hero-grid{position:absolute;inset:0;z-index:0;background-image:linear-gradient(rgba(255,255,255,.03) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,.03) 1px,transparent 1px);background-size:60px 60px}
+.hero-eyebrow{font-size:12px;letter-spacing:.25em;text-transform:uppercase;color:var(--gold);margin-bottom:24px;position:relative;z-index:1;opacity:0;animation:fadeUp .8s .9s ease forwards}
+.hero h1{font-family:'Playfair Display',serif;font-size:clamp(40px,7vw,86px);line-height:1.08;color:var(--cream);position:relative;z-index:1;opacity:0;animation:fadeUp .9s 1s ease forwards}
+.hero h1 em{font-style:italic;color:var(--mist)}
+.hero-sub{margin-top:24px;font-size:clamp(15px,2vw,18px);color:var(--steel);font-weight:300;max-width:480px;position:relative;z-index:1;opacity:0;animation:fadeUp .8s 1.1s ease forwards}
+.hero-actions{margin-top:44px;display:flex;gap:16px;flex-wrap:wrap;justify-content:center;position:relative;z-index:1;opacity:0;animation:fadeUp .8s 1.2s ease forwards}
 
-/* ── LOADER ── */
-#loader {
-  position: fixed; inset: 0;
-  background: var(--navy);
-  display: flex; align-items: center; justify-content: center;
-  z-index: 9999;
-  transition: opacity .6s ease, visibility .6s;
-}
-#loader.hide { opacity: 0; visibility: hidden; }
-.loader-text {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(24px, 5vw, 42px);
-  letter-spacing: .15em;
-  color: var(--cream);
-  overflow: hidden;
-}
-.loader-text span {
-  display: inline-block;
-  animation: letterDrop .8s cubic-bezier(.22,1,.36,1) both;
-}
-.loader-text span:nth-child(2) { animation-delay:.05s }
-.loader-text span:nth-child(3) { animation-delay:.10s }
-.loader-text span:nth-child(4) { animation-delay:.15s }
-.loader-text span:nth-child(5) { animation-delay:.20s }
-.loader-text span:nth-child(6) { animation-delay:.25s }
-.loader-text span:nth-child(7) { animation-delay:.30s }
-.loader-text span:nth-child(8) { animation-delay:.35s }
-.loader-text span:nth-child(9) { animation-delay:.40s }
-.loader-text span:nth-child(10){ animation-delay:.45s }
-.loader-text span:nth-child(11){ animation-delay:.50s }
-.loader-text span:nth-child(12){ animation-delay:.55s }
-.loader-text span:nth-child(13){ animation-delay:.60s }
-@keyframes letterDrop {
-  from { opacity:0; transform:translateY(-30px); }
-  to   { opacity:1; transform:translateY(0); }
-}
+/* BUTTONS */
+.btn-primary{padding:14px 36px;border-radius:40px;background:var(--accent);color:var(--white);font-size:14px;letter-spacing:.08em;font-weight:500;border:none;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s,background .2s;box-shadow:0 8px 30px rgba(78,125,153,.35);display:inline-flex;align-items:center;gap:8px}
+.btn-primary:hover{transform:translateY(-2px);background:var(--slate);box-shadow:0 12px 40px rgba(78,125,153,.45)}
+.btn-outline{padding:14px 36px;border-radius:40px;background:transparent;color:var(--mist);font-size:14px;letter-spacing:.08em;font-weight:400;border:1px solid rgba(255,255,255,.2);cursor:pointer;text-decoration:none;transition:transform .2s,border-color .2s,color .2s;display:inline-block}
+.btn-outline:hover{transform:translateY(-2px);border-color:var(--mist);color:var(--white)}
+.btn-gold{padding:14px 36px;border-radius:40px;background:linear-gradient(135deg,var(--gold),#b8924a);color:var(--navy);font-size:14px;letter-spacing:.08em;font-weight:700;border:none;cursor:pointer;text-decoration:none;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 30px rgba(201,169,110,.4);display:inline-flex;align-items:center;gap:8px}
+.btn-gold:hover{transform:translateY(-3px);box-shadow:0 14px 40px rgba(201,169,110,.55)}
 
-/* ── HEADER ── */
-header {
-  position: fixed; top: 0; left: 0; right: 0; z-index: 100;
-  display: flex; align-items: center; justify-content: space-between;
-  padding: 20px 48px;
-  backdrop-filter: blur(20px);
-  background: rgba(26,37,64,.75);
-  border-bottom: 1px solid rgba(255,255,255,.07);
-  transition: padding .3s;
-}
-.logo {
-  font-family: 'Playfair Display', serif;
-  font-size: 20px;
-  letter-spacing: .08em;
-  color: var(--cream);
-}
-.logo span { font-style: italic; color: var(--mist); }
-nav { display: flex; gap: 32px; align-items: center; }
-nav a {
-  font-size: 13px; letter-spacing: .12em; text-transform: uppercase;
-  color: var(--mist); text-decoration: none;
-  position: relative; transition: color .3s;
-}
-nav a::after {
-  content: ''; position: absolute; left: 0; bottom: -4px;
-  width: 0; height: 1px; background: var(--gold);
-  transition: width .3s;
-}
-nav a:hover { color: var(--white); }
-nav a:hover::after { width: 100%; }
-.nav-cta {
-  padding: 9px 22px;
-  border: 1px solid rgba(255,255,255,.25);
-  border-radius: 40px;
-  color: var(--white) !important;
-  transition: background .3s, border-color .3s !important;
-}
-.nav-cta:hover { background: var(--accent); border-color: var(--accent); }
-.nav-cta::after { display: none !important; }
+.scroll-hint{position:absolute;bottom:40px;left:50%;transform:translateX(-50%);z-index:1;display:flex;flex-direction:column;align-items:center;gap:8px;color:var(--steel);font-size:11px;letter-spacing:.2em;text-transform:uppercase;opacity:0;animation:fadeIn 1s 1.8s ease forwards}
+.scroll-line{width:1px;height:40px;background:linear-gradient(to bottom,transparent,var(--steel));animation:scrollPulse 2s 2s ease-in-out infinite}
+@keyframes scrollPulse{0%,100%{opacity:.3;transform:scaleY(1)}50%{opacity:1;transform:scaleY(1.2)}}
 
-/* ── HERO ── */
-.hero {
-  min-height: 100vh;
-  display: flex; flex-direction: column;
-  align-items: center; justify-content: center;
-  text-align: center;
-  padding: 120px 24px 80px;
-  position: relative; overflow: hidden;
-}
-.hero-bg {
-  position: absolute; inset: 0; z-index: 0;
-  background:
-    radial-gradient(ellipse 80% 60% at 50% 0%, rgba(77,125,153,.18) 0%, transparent 70%),
-    radial-gradient(ellipse 50% 40% at 80% 80%, rgba(61,90,115,.12) 0%, transparent 60%);
-}
-.hero-grid {
-  position: absolute; inset: 0; z-index: 0;
-  background-image:
-    linear-gradient(rgba(255,255,255,.03) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(255,255,255,.03) 1px, transparent 1px);
-  background-size: 60px 60px;
-}
-.hero-eyebrow {
-  font-size: 12px; letter-spacing: .25em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 24px;
-  position: relative; z-index: 1;
-  opacity: 0; animation: fadeUp .8s .9s ease forwards;
-}
-.hero h1 {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(40px, 7vw, 86px);
-  line-height: 1.08;
-  color: var(--cream);
-  position: relative; z-index: 1;
-  opacity: 0; animation: fadeUp .9s 1s ease forwards;
-}
-.hero h1 em { font-style: italic; color: var(--mist); }
-.hero-sub {
-  margin-top: 24px;
-  font-size: clamp(15px, 2vw, 18px);
-  color: var(--steel); font-weight: 300; max-width: 480px;
-  position: relative; z-index: 1;
-  opacity: 0; animation: fadeUp .8s 1.1s ease forwards;
-}
-.hero-actions {
-  margin-top: 44px; display: flex; gap: 16px; flex-wrap: wrap; justify-content: center;
-  position: relative; z-index: 1;
-  opacity: 0; animation: fadeUp .8s 1.2s ease forwards;
-}
-.btn-primary {
-  padding: 14px 36px; border-radius: 40px;
-  background: var(--accent); color: var(--white);
-  font-size: 14px; letter-spacing: .08em; font-weight: 500;
-  border: none; cursor: pointer; text-decoration: none;
-  transition: transform .2s, box-shadow .2s, background .2s;
-  box-shadow: 0 8px 30px rgba(78,125,153,.35);
-}
-.btn-primary:hover { transform: translateY(-2px); background: var(--slate); box-shadow: 0 12px 40px rgba(78,125,153,.45); }
-.btn-outline {
-  padding: 14px 36px; border-radius: 40px;
-  background: transparent; color: var(--mist);
-  font-size: 14px; letter-spacing: .08em; font-weight: 400;
-  border: 1px solid rgba(255,255,255,.2); cursor: pointer; text-decoration: none;
-  transition: transform .2s, border-color .2s, color .2s;
-}
-.btn-outline:hover { transform: translateY(-2px); border-color: var(--mist); color: var(--white); }
+/* SECTIONS */
+section{padding:100px 24px}
+.section-label{font-size:11px;letter-spacing:.3em;text-transform:uppercase;color:var(--gold);margin-bottom:12px;display:block}
+.section-title{font-family:'Playfair Display',serif;font-size:clamp(30px,4vw,48px);color:var(--cream);margin-bottom:16px}
+.section-sub{font-size:15px;color:var(--steel);font-weight:300;max-width:480px}
+.section-header{margin-bottom:60px}
 
-.scroll-hint {
-  position: absolute; bottom: 40px; left: 50%;
-  transform: translateX(-50%); z-index: 1;
-  display: flex; flex-direction: column; align-items: center; gap: 8px;
-  color: var(--steel); font-size: 11px; letter-spacing: .2em; text-transform: uppercase;
-  opacity: 0; animation: fadeIn 1s 1.8s ease forwards;
-}
-.scroll-line {
-  width: 1px; height: 40px;
-  background: linear-gradient(to bottom, transparent, var(--steel));
-  animation: scrollPulse 2s 2s ease-in-out infinite;
-}
-@keyframes scrollPulse {
-  0%,100% { opacity:.3; transform:scaleY(1); }
-  50% { opacity:1; transform:scaleY(1.2); }
-}
+/* PORTFOLIO */
+#portfolio{background:var(--navy-mid)}
+.port-container{max-width:1200px;margin:0 auto}
+.port-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:3px}
+.port-grid .card:first-child{grid-column:span 2;grid-row:span 2}
+.card{position:relative;overflow:hidden;cursor:pointer;background:var(--navy);aspect-ratio:1/1;opacity:0;transform:translateY(24px);transition:opacity .6s ease,transform .6s ease}
+.card.show{opacity:1;transform:translateY(0)}
+.card img{width:100%;height:100%;object-fit:cover;transition:transform .5s ease;display:block}
+.card:hover img{transform:scale(1.06)}
+.card-overlay{position:absolute;inset:0;background:linear-gradient(to top,rgba(26,37,64,.9) 0%,transparent 60%);opacity:0;transition:opacity .4s;display:flex;align-items:flex-end;padding:24px}
+.card:hover .card-overlay{opacity:1}
+.card-label{font-size:12px;letter-spacing:.15em;text-transform:uppercase;color:var(--cream);font-weight:500}
 
-/* ── SECTION BASE ── */
-section { padding: 100px 24px; }
-.section-label {
-  font-size: 11px; letter-spacing: .3em; text-transform: uppercase;
-  color: var(--gold); margin-bottom: 12px; display: block;
-}
-.section-title {
-  font-family: 'Playfair Display', serif;
-  font-size: clamp(30px, 4vw, 48px);
-  color: var(--cream); margin-bottom: 16px;
-}
-.section-sub {
-  font-size: 15px; color: var(--steel); font-weight: 300;
-  max-width: 480px;
-}
-.section-header { margin-bottom: 60px; }
+/* SOBRE */
+#sobre{background:var(--navy);display:flex;align-items:center;justify-content:center}
+.sobre-inner{max-width:900px;width:100%;display:grid;grid-template-columns:1fr 1fr;gap:80px;align-items:center}
+.sobre-card{background:var(--navy-mid);border:1px solid rgba(255,255,255,.07);border-radius:16px;padding:32px;display:flex;flex-direction:column;gap:20px}
+.sobre-logo-area{width:100%;aspect-ratio:4/3;background:var(--cream);border-radius:10px;display:flex;align-items:center;justify-content:center;overflow:hidden}
+.sobre-logo-area img{width:70%;object-fit:contain}
+.stat-row{display:flex;gap:24px}
+.stat{flex:1;text-align:center}
+.stat-num{font-family:'Playfair Display',serif;font-size:32px;color:var(--cream);display:block}
+.stat-desc{font-size:12px;color:var(--steel);letter-spacing:.1em}
+.sobre-text .section-sub{max-width:100%;line-height:1.8}
+.sobre-text p+p{margin-top:16px}
+.tag-row{display:flex;flex-wrap:wrap;gap:10px;margin-top:28px}
+.tag{font-size:12px;letter-spacing:.1em;color:var(--mist);border:1px solid rgba(168,191,201,.2);border-radius:30px;padding:6px 16px}
 
-/* ── PORTFOLIO GRID ── */
-#portfolio { background: var(--navy-mid); }
-.port-container { max-width: 1200px; margin: 0 auto; }
+/* PREÇOS */
+#precos{background:var(--navy-mid)}
+.price-container{max-width:900px;margin:0 auto}
+.price-grid{display:grid;grid-template-columns:1fr 1fr;gap:20px}
+.pricing-box{border-radius:16px;overflow:hidden;border:1px solid rgba(255,255,255,.08);opacity:0;transform:translateY(24px);transition:opacity .6s,transform .6s,box-shadow .3s;cursor:pointer}
+.pricing-box.show{opacity:1;transform:translateY(0)}
+.pricing-box:hover{box-shadow:0 20px 60px rgba(0,0,0,.4);transform:translateY(-4px)!important}
+.pricing-box img{width:100%;display:block}
 
-.port-grid {
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 3px;
-}
-.port-grid .card:first-child { grid-column: span 2; grid-row: span 2; }
+/* CTA ORÇAMENTO */
+#orcamento-cta{background:var(--navy);padding:80px 24px}
+.orc-wrap{max-width:720px;margin:0 auto;background:var(--navy-mid);border:1px solid rgba(201,169,110,.25);border-radius:28px;padding:60px 52px;text-align:center;position:relative;overflow:hidden}
+.orc-wrap::before{content:'';position:absolute;inset:0;background:radial-gradient(ellipse 70% 50% at 50% -10%,rgba(201,169,110,.1) 0%,transparent 65%);pointer-events:none}
+.orc-wrap .section-title{font-size:clamp(28px,4vw,44px)}
+.orc-wrap .section-sub{margin:0 auto 32px;max-width:440px}
+.orc-chips{display:flex;justify-content:center;gap:10px;flex-wrap:wrap;margin-bottom:36px}
+.orc-chip{background:rgba(201,169,110,.1);border:1px solid rgba(201,169,110,.3);border-radius:30px;padding:6px 18px;font-size:12px;color:var(--gold);letter-spacing:.06em}
+@media(max-width:680px){.orc-wrap{padding:40px 24px}}
 
-.card {
-  position: relative; overflow: hidden; cursor: pointer;
-  background: var(--navy);
-  aspect-ratio: 1/1;
-  opacity: 0; transform: translateY(24px);
-  transition: opacity .6s ease, transform .6s ease;
-}
-.card.show { opacity: 1; transform: translateY(0); }
-.card img { width: 100%; height: 100%; object-fit: cover; transition: transform .5s ease; display: block; }
-.card:hover img { transform: scale(1.06); }
-.card-overlay {
-  position: absolute; inset: 0;
-  background: linear-gradient(to top, rgba(26,37,64,.9) 0%, transparent 60%);
-  opacity: 0; transition: opacity .4s;
-  display: flex; align-items: flex-end; padding: 24px;
-}
-.card:hover .card-overlay { opacity: 1; }
-.card-label {
-  font-size: 12px; letter-spacing: .15em; text-transform: uppercase;
-  color: var(--cream); font-weight: 500;
-}
+/* CONTEÚDO */
+#curiosidades{background:var(--navy)}
+.curio-container{max-width:1100px;margin:0 auto}
+.curio-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(240px,1fr));gap:16px}
+.curiosidade{background:var(--navy-mid);border:1px solid rgba(255,255,255,.06);border-radius:14px;padding:28px;cursor:pointer;transition:transform .3s,border-color .3s,background .3s;opacity:0;transform:translateY(20px)}
+.curiosidade.show{opacity:1;transform:translateY(0)}
+.curiosidade:hover{transform:translateY(-6px);border-color:rgba(78,125,153,.4);background:rgba(36,50,86,.8)}
+.curio-icon{width:40px;height:40px;border-radius:10px;background:rgba(78,125,153,.15);border:1px solid rgba(78,125,153,.25);display:flex;align-items:center;justify-content:center;margin-bottom:18px;font-size:18px}
+.curiosidade h3{font-family:'Playfair Display',serif;font-size:18px;color:var(--cream);margin-bottom:8px}
+.curiosidade p{font-size:13px;color:var(--steel);line-height:1.6}
+.curio-arrow{margin-top:20px;font-size:12px;color:var(--accent);letter-spacing:.1em}
 
-/* ── SOBRE ── */
-#sobre {
-  background: var(--navy);
-  display: flex; align-items: center; justify-content: center;
-}
-.sobre-inner {
-  max-width: 900px; width: 100%;
-  display: grid; grid-template-columns: 1fr 1fr; gap: 80px; align-items: center;
-}
-.sobre-visual {
-  position: relative;
-}
-.sobre-card {
-  background: var(--navy-mid);
-  border: 1px solid rgba(255,255,255,.07);
-  border-radius: 16px;
-  padding: 32px;
-  display: flex; flex-direction: column; gap: 20px;
-}
-.sobre-logo-area {
-  width: 100%; aspect-ratio: 4/3;
-  background: var(--cream);
-  border-radius: 10px;
-  display: flex; align-items: center; justify-content: center;
-  overflow: hidden;
-}
-.sobre-logo-area img { width: 70%; object-fit: contain; }
-.stat-row { display: flex; gap: 24px; }
-.stat { flex: 1; text-align: center; }
-.stat-num {
-  font-family: 'Playfair Display', serif;
-  font-size: 32px; color: var(--cream);
-  display: block;
-}
-.stat-desc { font-size: 12px; color: var(--steel); letter-spacing: .1em; }
+/* CONTATO */
+#contato{background:var(--navy-mid);text-align:center}
+.contato-inner{max-width:560px;margin:0 auto}
+.contato-inner .section-sub{margin:0 auto 40px}
+.instagram-btn{display:inline-flex;align-items:center;gap:10px;padding:16px 40px;border-radius:40px;background:var(--accent);color:var(--white);font-size:14px;font-weight:500;letter-spacing:.08em;text-decoration:none;border:none;cursor:pointer;transition:transform .2s,box-shadow .2s;box-shadow:0 8px 30px rgba(78,125,153,.3)}
+.instagram-btn:hover{transform:translateY(-2px);box-shadow:0 14px 40px rgba(78,125,153,.45)}
 
-.sobre-text .section-sub { max-width: 100%; line-height: 1.8; }
-.sobre-text p + p { margin-top: 16px; }
-.tag-row { display: flex; flex-wrap: wrap; gap: 10px; margin-top: 28px; }
-.tag {
-  font-size: 12px; letter-spacing: .1em; color: var(--mist);
-  border: 1px solid rgba(168,191,201,.2);
-  border-radius: 30px; padding: 6px 16px;
-}
+/* FOOTER */
+footer{background:var(--navy);border-top:1px solid rgba(255,255,255,.06);padding:32px 48px;display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.footer-logo{font-family:'Playfair Display',serif;font-size:16px;color:var(--cream)}
+.footer-copy{font-size:12px;color:var(--steel);letter-spacing:.08em}
+.footer-links{display:flex;gap:20px}
+.footer-links a{font-size:12px;color:var(--steel);text-decoration:none;letter-spacing:.08em;text-transform:uppercase;transition:color .2s}
+.footer-links a:hover{color:var(--mist)}
+.footer-links a.gold{color:var(--gold)}
+.footer-links a.gold:hover{color:#e8c484}
 
-/* ── PREÇOS ── */
-#precos { background: var(--navy-mid); }
-.price-container { max-width: 900px; margin: 0 auto; }
-.price-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 20px; }
-.pricing-box {
-  border-radius: 16px; overflow: hidden;
-  border: 1px solid rgba(255,255,255,.08);
-  opacity: 0; transform: translateY(24px);
-  transition: opacity .6s, transform .6s, box-shadow .3s;
-  cursor: pointer;
-}
-.pricing-box.show { opacity: 1; transform: translateY(0); }
-.pricing-box:hover { box-shadow: 0 20px 60px rgba(0,0,0,.4); transform: translateY(-4px) !important; }
-.pricing-box img { width: 100%; display: block; }
+/* LIGHTBOX */
+#lightbox{position:fixed;inset:0;background:rgba(10,15,30,.95);backdrop-filter:blur(10px);display:none;align-items:center;justify-content:center;z-index:9998}
+#lightbox.open{display:flex}
+#lightbox img{max-width:88vw;max-height:88vh;border-radius:12px;box-shadow:0 40px 100px rgba(0,0,0,.6);animation:lbIn .3s ease}
+@keyframes lbIn{from{opacity:0;transform:scale(.95)}to{opacity:1;transform:scale(1)}}
+#lb-close{position:absolute;top:28px;right:32px;font-size:28px;color:var(--mist);cursor:pointer;background:none;border:none;line-height:1;transition:color .2s}
+#lb-close:hover{color:var(--white)}
 
-/* ── CONTEÚDO ── */
-#curiosidades { background: var(--navy); }
-.curio-container { max-width: 1100px; margin: 0 auto; }
-.curio-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(240px,1fr)); gap: 16px; }
+/* MODAL */
+#modal{position:fixed;inset:0;background:rgba(10,15,30,.85);backdrop-filter:blur(12px);display:none;align-items:center;justify-content:center;z-index:9999;padding:24px}
+#modal.open{display:flex}
+#modal-content{background:var(--navy-mid);border:1px solid rgba(255,255,255,.1);border-radius:20px;padding:44px;max-width:560px;width:100%;animation:lbIn .3s ease;position:relative}
+#modal-content h2{font-family:'Playfair Display',serif;font-size:26px;color:var(--cream);margin-bottom:16px}
+#modal-content p{font-size:15px;color:var(--steel);line-height:1.8}
+#modal-close{position:absolute;top:20px;right:24px;font-size:24px;color:var(--steel);cursor:pointer;background:none;border:none;transition:color .2s}
+#modal-close:hover{color:var(--white)}
 
-.curiosidade {
-  background: var(--navy-mid);
-  border: 1px solid rgba(255,255,255,.06);
-  border-radius: 14px; padding: 28px;
-  cursor: pointer; transition: transform .3s, border-color .3s, background .3s;
-  opacity: 0; transform: translateY(20px);
-}
-.curiosidade.show { opacity: 1; transform: translateY(0); }
-.curiosidade:hover { transform: translateY(-6px); border-color: rgba(78,125,153,.4); background: rgba(36,50,86,.8); }
-.curio-icon {
-  width: 40px; height: 40px; border-radius: 10px;
-  background: rgba(78,125,153,.15); border: 1px solid rgba(78,125,153,.25);
-  display: flex; align-items: center; justify-content: center;
-  margin-bottom: 18px; font-size: 18px;
-}
-.curiosidade h3 { font-family: 'Playfair Display', serif; font-size: 18px; color: var(--cream); margin-bottom: 8px; }
-.curiosidade p { font-size: 13px; color: var(--steel); line-height: 1.6; }
-.curio-arrow { margin-top: 20px; font-size: 12px; color: var(--accent); letter-spacing: .1em; }
+/* ANIMATIONS */
+@keyframes fadeUp{from{opacity:0;transform:translateY(28px)}to{opacity:1;transform:translateY(0)}}
+@keyframes fadeIn{from{opacity:0}to{opacity:1}}
 
-/* ── CONTATO ── */
-#contato {
-  background: var(--navy-mid);
-  text-align: center;
-}
-.contato-inner { max-width: 560px; margin: 0 auto; }
-.contato-inner .section-sub { margin: 0 auto 40px; }
-.instagram-btn {
-  display: inline-flex; align-items: center; gap: 10px;
-  padding: 16px 40px; border-radius: 40px;
-  background: var(--accent); color: var(--white);
-  font-size: 14px; font-weight: 500; letter-spacing: .08em;
-  text-decoration: none; border: none; cursor: pointer;
-  transition: transform .2s, box-shadow .2s;
-  box-shadow: 0 8px 30px rgba(78,125,153,.3);
-}
-.instagram-btn:hover { transform: translateY(-2px); box-shadow: 0 14px 40px rgba(78,125,153,.45); }
-
-/* ── FOOTER ── */
-footer {
-  background: var(--navy);
-  border-top: 1px solid rgba(255,255,255,.06);
-  padding: 32px 48px;
-  display: flex; align-items: center; justify-content: space-between;
-  flex-wrap: wrap; gap: 16px;
-}
-.footer-logo { font-family: 'Playfair Display', serif; font-size: 16px; color: var(--cream); }
-.footer-copy { font-size: 12px; color: var(--steel); letter-spacing: .08em; }
-
-/* ── LIGHTBOX ── */
-#lightbox {
-  position: fixed; inset: 0;
-  background: rgba(10,15,30,.95);
-  backdrop-filter: blur(10px);
-  display: none; align-items: center; justify-content: center;
-  z-index: 9998;
-}
-#lightbox.open { display: flex; }
-#lightbox img {
-  max-width: 88vw; max-height: 88vh;
-  border-radius: 12px;
-  box-shadow: 0 40px 100px rgba(0,0,0,.6);
-  animation: lbIn .3s ease;
-}
-@keyframes lbIn { from { opacity:0; transform:scale(.95); } to { opacity:1; transform:scale(1); } }
-#lb-close {
-  position: absolute; top: 28px; right: 32px;
-  font-size: 28px; color: var(--mist); cursor: pointer;
-  background: none; border: none; line-height: 1;
-  transition: color .2s;
-}
-#lb-close:hover { color: var(--white); }
-
-/* ── MODAL ── */
-#modal {
-  position: fixed; inset: 0;
-  background: rgba(10,15,30,.85);
-  backdrop-filter: blur(12px);
-  display: none; align-items: center; justify-content: center;
-  z-index: 9999; padding: 24px;
-}
-#modal.open { display: flex; }
-#modal-content {
-  background: var(--navy-mid);
-  border: 1px solid rgba(255,255,255,.1);
-  border-radius: 20px;
-  padding: 44px; max-width: 560px; width: 100%;
-  animation: lbIn .3s ease;
-  position: relative;
-}
-#modal-content h2 {
-  font-family: 'Playfair Display', serif;
-  font-size: 26px; color: var(--cream); margin-bottom: 16px;
-}
-#modal-content p { font-size: 15px; color: var(--steel); line-height: 1.8; }
-#modal-close {
-  position: absolute; top: 20px; right: 24px;
-  font-size: 24px; color: var(--steel); cursor: pointer;
-  background: none; border: none; transition: color .2s;
-}
-#modal-close:hover { color: var(--white); }
-
-/* ── ANIMATIONS ── */
-@keyframes fadeUp {
-  from { opacity:0; transform:translateY(28px); }
-  to   { opacity:1; transform:translateY(0); }
-}
-@keyframes fadeIn {
-  from { opacity:0; } to { opacity:1; }
-}
-
-/* ── RESPONSIVE ── */
-@media(max-width:900px) {
-  .port-grid { grid-template-columns: repeat(2,1fr); }
-  .port-grid .card:first-child { grid-column: span 1; grid-row: span 1; }
-  .sobre-inner { grid-template-columns: 1fr; gap: 40px; }
-  .price-grid { grid-template-columns: 1fr; }
-}
-@media(max-width:680px) {
-  header { padding: 16px 24px; }
-  nav a:not(.nav-cta) { display: none; }
-  .port-grid { grid-template-columns: repeat(2,1fr); }
-}
-@media(max-width:480px) {
-  footer { flex-direction: column; text-align: center; }
-}
+/* RESPONSIVE */
+@media(max-width:900px){.port-grid{grid-template-columns:repeat(2,1fr)}.port-grid .card:first-child{grid-column:span 1;grid-row:span 1}.sobre-inner{grid-template-columns:1fr;gap:40px}.price-grid{grid-template-columns:1fr}}
+@media(max-width:680px){header{padding:16px 24px}nav a:not(.nav-cta){display:none}.port-grid{grid-template-columns:repeat(2,1fr)}}
+@media(max-width:480px){footer{flex-direction:column;text-align:center}}
 </style>
 </head>
 <body>
 
-<!-- LOADER -->
-<div id="loader">
-  <div class="loader-text">
-    <span>S</span><span>t</span><span>u</span><span>d</span><span>i</span><span>o</span>
-    <span>&nbsp;</span>
-    <span>A</span><span>d</span><span>r</span><span>i</span><span>a</span><span>n</span>
-  </div>
-</div>
-
-<!-- LIGHTBOX -->
-<div id="lightbox">
-  <button id="lb-close">&#x2715;</button>
-  <img src="" alt="">
-</div>
-
-<!-- MODAL -->
-<div id="modal">
-  <div id="modal-content">
-    <button id="modal-close">&#x2715;</button>
-  </div>
-</div>
+<div id="loader"><div class="loader-text"><span>S</span><span>t</span><span>u</span><span>d</span><span>i</span><span>o</span><span>&nbsp;</span><span>A</span><span>d</span><span>r</span><span>i</span><span>a</span><span>n</span></div></div>
+<div id="lightbox"><button id="lb-close">&#x2715;</button><img src="" alt=""></div>
+<div id="modal"><div id="modal-content"><button id="modal-close">&#x2715;</button></div></div>
 
 <!-- HEADER -->
 <header>
@@ -464,7 +179,7 @@ footer {
     <a href="#portfolio">Trabalhos</a>
     <a href="#sobre">Sobre</a>
     <a href="#curiosidades">Conteúdo</a>
-    <a href="#contato" class="nav-cta">Contato</a>
+    <a href="orcamento.html" class="nav-cta nav-orc">✦ Orçamento</a>
   </nav>
 </header>
 
@@ -476,13 +191,13 @@ footer {
   <h1>Marcas que <em>ficam</em><br>na memória</h1>
   <p class="hero-sub">Identidade visual moderna, estratégica e com impacto visual real para o seu negócio.</p>
   <div class="hero-actions">
-    <a href="port.html" class="btn-primary">Ver portfólio</a>
-    <a href="#contato" class="btn-outline">Fale comigo</a>
+    <a href="orcamento.html" class="btn-gold">
+      <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+      Fazer orçamento
+    </a>
+    <a href="port.html" class="btn-outline">Ver portfólio</a>
   </div>
-  <div class="scroll-hint">
-    <div class="scroll-line"></div>
-    scroll
-  </div>
+  <div class="scroll-hint"><div class="scroll-line"></div>scroll</div>
 </section>
 
 <!-- PORTFOLIO -->
@@ -494,32 +209,14 @@ footer {
       <p class="section-sub">Uma seleção de projetos de identidade visual e design criativo.</p>
     </div>
     <div class="port-grid">
-      <div class="card">
-        <img src="one.jpeg" alt="">
-        <div class="card-overlay"><span class="card-label">Ver projeto</span></div>
-      </div>
-      <div class="card">
-        <img src="two.jpeg" alt="">
-        <div class="card-overlay"><span class="card-label">Ver projeto</span></div>
-      </div>
-      <div class="card">
-        <img src="tre.jpeg" alt="">
-        <div class="card-overlay"><span class="card-label">Ver projeto</span></div>
-      </div>
-      <div class="card">
-        <img src="fore.jpeg" alt="">
-        <div class="card-overlay"><span class="card-label">Ver projeto</span></div>
-      </div>
-      <div class="card">
-        <img src="five.jpeg" alt="">
-        <div class="card-overlay"><span class="card-label">Ver projeto</span></div>
-      </div>
-      <div class="card">
-        <img src="sex.jpeg" alt="">
-        <div class="card-overlay"><span class="card-label">Ver projeto</span></div>
-      </div>
+      <div class="card"><img src="one.jpeg" alt=""><div class="card-overlay"><span class="card-label">Ver projeto</span></div></div>
+      <div class="card"><img src="two.jpeg" alt=""><div class="card-overlay"><span class="card-label">Ver projeto</span></div></div>
+      <div class="card"><img src="tre.jpeg" alt=""><div class="card-overlay"><span class="card-label">Ver projeto</span></div></div>
+      <div class="card"><img src="fore.jpeg" alt=""><div class="card-overlay"><span class="card-label">Ver projeto</span></div></div>
+      <div class="card"><img src="five.jpeg" alt=""><div class="card-overlay"><span class="card-label">Ver projeto</span></div></div>
+      <div class="card"><img src="sex.jpeg" alt=""><div class="card-overlay"><span class="card-label">Ver projeto</span></div></div>
     </div>
-    <div style="text-align:center; margin-top:48px;">
+    <div style="text-align:center;margin-top:48px">
       <a href="port.html" class="btn-primary">Ver portfólio completo →</a>
     </div>
   </div>
@@ -530,22 +227,11 @@ footer {
   <div class="sobre-inner">
     <div class="sobre-visual">
       <div class="sobre-card">
-        <div class="sobre-logo-area">
-          <img src="brand.png" alt="Studio Adrian logo">
-        </div>
+        <div class="sobre-logo-area"><img src="brand.png" alt="Studio Adrian logo"></div>
         <div class="stat-row">
-          <div class="stat">
-            <span class="stat-num">100%</span>
-            <span class="stat-desc">Diferenciado</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">+10</span>
-            <span class="stat-desc">clientes satisfeitos</span>
-          </div>
-          <div class="stat">
-            <span class="stat-num">100%</span>
-            <span class="stat-desc">Dedicação</span>
-          </div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-desc">Diferenciado</span></div>
+          <div class="stat"><span class="stat-num">+10</span><span class="stat-desc">clientes satisfeitos</span></div>
+          <div class="stat"><span class="stat-num">100%</span><span class="stat-desc">Dedicação</span></div>
         </div>
       </div>
     </div>
@@ -555,10 +241,8 @@ footer {
       <p class="section-sub">Focado em criar identidades visuais com estratégia, posicionamento e personalidade. Cada projeto é tratado como único.</p>
       <p class="section-sub" style="margin-top:14px">Meu trabalho vai além da estética — é sobre comunicar o valor da sua marca de forma memorável e consistente.</p>
       <div class="tag-row">
-        <span class="tag">Identidade Visual</span>
-        <span class="tag">Branding</span>
-        <span class="tag">Social Media</span>
-        <span class="tag">Logotipo</span>
+        <span class="tag">Identidade Visual</span><span class="tag">Branding</span>
+        <span class="tag">Social Media</span><span class="tag">Logotipo</span>
       </div>
     </div>
   </div>
@@ -578,6 +262,27 @@ footer {
   </div>
 </section>
 
+<!-- CTA ORÇAMENTO -->
+<section id="orcamento-cta">
+  <div class="orc-wrap">
+    <span class="section-label">Monte seu pedido</span>
+    <h2 class="section-title">Pronto para <em style="font-style:italic;color:var(--mist)">começar?</em></h2>
+    <p class="section-sub">Selecione o serviço, adicione extras, preencha seus dados e você será direcionado direto para o meu WhatsApp com tudo pronto.</p>
+    <div class="orc-chips">
+      <span class="orc-chip">Post R$ 30</span>
+      <span class="orc-chip">Logomarca R$ 70</span>
+      <span class="orc-chip">Carrosel R$ 100</span>
+      <span class="orc-chip">Pacote Benefício R$ 150</span>
+      <span class="orc-chip">Pacote Premium R$ 200</span>
+      <span class="orc-chip">Pacote Ultra R$ 300</span>
+    </div>
+    <a href="orcamento.html" class="btn-gold" style="font-size:15px;padding:16px 44px">
+      <svg width="18" height="18" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2"><path d="M9 5H7a2 2 0 00-2 2v12a2 2 0 002 2h10a2 2 0 002-2V7a2 2 0 00-2-2h-2"/><rect x="9" y="3" width="6" height="4" rx="1"/><path d="M9 12h6M9 16h4"/></svg>
+      Fazer meu orçamento agora
+    </a>
+  </div>
+</section>
+
 <!-- CONTEÚDO -->
 <section id="curiosidades">
   <div class="curio-container">
@@ -587,43 +292,18 @@ footer {
       <p class="section-sub">Reflexões sobre o poder do design para transformar marcas.</p>
     </div>
     <div class="curio-grid">
-
-      <div class="curiosidade"
-           data-title="Por que minha identidade visual é diferente"
-           data-text="Meu trabalho não é apenas estética. Eu construo identidades visuais com base em estratégia, posicionamento e personalidade da marca. Cada cor, tipografia e composição tem um propósito claro: destacar sua marca no mercado e torná-la memorável.">
-        <div class="curio-icon">✦</div>
-        <h3>Diferencial</h3>
-        <p>Estratégia por trás de cada escolha visual.</p>
-        <div class="curio-arrow">Ler mais →</div>
+      <div class="curiosidade" data-title="Por que minha identidade visual é diferente" data-text="Meu trabalho não é apenas estética. Eu construo identidades visuais com base em estratégia, posicionamento e personalidade da marca. Cada cor, tipografia e composição tem um propósito claro: destacar sua marca no mercado e torná-la memorável.">
+        <div class="curio-icon">✦</div><h3>Diferencial</h3><p>Estratégia por trás de cada escolha visual.</p><div class="curio-arrow">Ler mais →</div>
       </div>
-
-      <div class="curiosidade"
-           data-title="O que está incluso no meu serviço"
-           data-text="Ao contratar um projeto de identidade visual comigo, você recebe um sistema completo: logotipo, paleta de cores, tipografia e aplicações práticas. Tudo pensado para garantir consistência e profissionalismo em qualquer lugar que sua marca apareça.">
-        <div class="curio-icon">◈</div>
-        <h3>O que você recebe</h3>
-        <p>Sistema completo e pronto para usar.</p>
-        <div class="curio-arrow">Ler mais →</div>
+      <div class="curiosidade" data-title="O que está incluso no meu serviço" data-text="Ao contratar um projeto de identidade visual comigo, você recebe um sistema completo: logotipo, paleta de cores, tipografia e aplicações práticas. Tudo pensado para garantir consistência e profissionalismo em qualquer lugar que sua marca apareça.">
+        <div class="curio-icon">◈</div><h3>O que você recebe</h3><p>Sistema completo e pronto para usar.</p><div class="curio-arrow">Ler mais →</div>
       </div>
-
-      <div class="curiosidade"
-           data-title="Como funciona meu processo criativo"
-           data-text="Meu processo começa com pesquisa e entendimento do seu negócio. Depois, desenvolvo conceitos visuais, refino os melhores caminhos e entrego um resultado final alinhado com sua identidade e objetivo. Tudo com foco em qualidade e impacto.">
-        <div class="curio-icon">◎</div>
-        <h3>Processo criativo</h3>
-        <p>Da pesquisa ao resultado final com precisão.</p>
-        <div class="curio-arrow">Ler mais →</div>
+      <div class="curiosidade" data-title="Como funciona meu processo criativo" data-text="Meu processo começa com pesquisa e entendimento do seu negócio. Depois, desenvolvo conceitos visuais, refino os melhores caminhos e entrego um resultado final alinhado com sua identidade e objetivo. Tudo com foco em qualidade e impacto.">
+        <div class="curio-icon">◎</div><h3>Processo criativo</h3><p>Da pesquisa ao resultado final com precisão.</p><div class="curio-arrow">Ler mais →</div>
       </div>
-
-      <div class="curiosidade"
-           data-title="Por que investir em design profissional"
-           data-text="Um design profissional aumenta a credibilidade da sua marca, melhora a percepção do público e pode influenciar diretamente nas vendas. Não é gasto, é investimento em posicionamento e crescimento.">
-        <div class="curio-icon">◇</div>
-        <h3>Valor do design</h3>
-        <p>Como o design impacta diretamente seu negócio.</p>
-        <div class="curio-arrow">Ler mais →</div>
+      <div class="curiosidade" data-title="Por que investir em design profissional" data-text="Um design profissional aumenta a credibilidade da sua marca, melhora a percepção do público e pode influenciar diretamente nas vendas. Não é gasto, é investimento em posicionamento e crescimento.">
+        <div class="curio-icon">◇</div><h3>Valor do design</h3><p>Como o design impacta diretamente seu negócio.</p><div class="curio-arrow">Ler mais →</div>
       </div>
-
     </div>
   </div>
 </section>
@@ -645,63 +325,26 @@ footer {
 <!-- FOOTER -->
 <footer>
   <div class="footer-logo">Studio <em style="font-style:italic;color:var(--mist)">Adrian</em></div>
+  <div class="footer-links">
+    <a href="port.html">Portfólio</a>
+    <a href="orcamento.html" class="gold">✦ Orçamento</a>
+  </div>
   <span class="footer-copy">© 2025 Studio Adrian Design · Todos os direitos reservados</span>
 </footer>
 
 <script>
-// LOADER
-window.addEventListener('load', () => {
-  setTimeout(() => document.getElementById('loader').classList.add('hide'), 900);
-});
-
-// INTERSECTION OBSERVER
-const io = new IntersectionObserver(entries => {
-  entries.forEach((e, i) => {
-    if (e.isIntersecting) {
-      setTimeout(() => e.target.classList.add('show'), e.target.dataset.delay || 0);
-    }
-  });
-}, { threshold: .12 });
-
-document.querySelectorAll('.card, .pricing-box, .curiosidade').forEach((el, i) => {
-  el.dataset.delay = (i % 4) * 80;
-  io.observe(el);
-});
-
-// LIGHTBOX
-const lightbox = document.getElementById('lightbox');
-const lbImg = lightbox.querySelector('img');
-document.getElementById('lb-close').onclick = () => lightbox.classList.remove('open');
-lightbox.addEventListener('click', e => { if(e.target === lightbox) lightbox.classList.remove('open'); });
-
-document.querySelectorAll('.card').forEach(card => {
-  card.onclick = () => {
-    lbImg.src = card.querySelector('img').src;
-    lightbox.classList.add('open');
-  };
-});
-
-// MODAL
-const modal = document.getElementById('modal');
-const modalContent = document.getElementById('modal-content');
-document.getElementById('modal-close').onclick = () => modal.classList.remove('open');
-modal.addEventListener('click', e => { if(e.target === modal) modal.classList.remove('open'); });
-
-document.querySelectorAll('.curiosidade').forEach(card => {
-  card.onclick = () => {
-    modalContent.innerHTML = `
-      <button id="modal-close" onclick="document.getElementById('modal').classList.remove('open')" style="position:absolute;top:20px;right:24px;font-size:24px;color:var(--steel);cursor:pointer;background:none;border:none;transition:color .2s">✕</button>
-      <h2>${card.dataset.title}</h2>
-      <p>${card.dataset.text}</p>`;
-    modal.classList.add('open');
-  };
-});
-
-// STICKY HEADER SHRINK
-window.addEventListener('scroll', () => {
-  document.querySelector('header').style.padding = window.scrollY > 60 ? '14px 48px' : '20px 48px';
-});
+window.addEventListener('load',()=>setTimeout(()=>document.getElementById('loader').classList.add('hide'),900));
+const io=new IntersectionObserver(entries=>{entries.forEach(e=>{if(e.isIntersecting)setTimeout(()=>e.target.classList.add('show'),e.target.dataset.delay||0)})},{threshold:.12});
+document.querySelectorAll('.card,.pricing-box,.curiosidade').forEach((el,i)=>{el.dataset.delay=(i%4)*80;io.observe(el)});
+const lightbox=document.getElementById('lightbox'),lbImg=lightbox.querySelector('img');
+document.getElementById('lb-close').onclick=()=>lightbox.classList.remove('open');
+lightbox.addEventListener('click',e=>{if(e.target===lightbox)lightbox.classList.remove('open')});
+document.querySelectorAll('.card').forEach(card=>{card.onclick=()=>{lbImg.src=card.querySelector('img').src;lightbox.classList.add('open')}});
+const modal=document.getElementById('modal'),modalContent=document.getElementById('modal-content');
+document.getElementById('modal-close').onclick=()=>modal.classList.remove('open');
+modal.addEventListener('click',e=>{if(e.target===modal)modal.classList.remove('open')});
+document.querySelectorAll('.curiosidade').forEach(card=>{card.onclick=()=>{modalContent.innerHTML=`<button id="modal-close" onclick="document.getElementById('modal').classList.remove('open')" style="position:absolute;top:20px;right:24px;font-size:24px;color:var(--steel);cursor:pointer;background:none;border:none;transition:color .2s">✕</button><h2>${card.dataset.title}</h2><p>${card.dataset.text}</p>`;modal.classList.add('open')}});
+window.addEventListener('scroll',()=>{document.querySelector('header').style.padding=window.scrollY>60?'14px 48px':'20px 48px'});
 </script>
-
 </body>
 </html>
